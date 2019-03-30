@@ -41,7 +41,8 @@ class TurtleBot:
         goal_pose = Pose()
 
         # Get the list input below
-
+        goal_pose.x = input("input goal x: ")
+        goal_pose.y = input("input goal y: ")
         vel_msg = Twist()
         
         while not rospy.is_shutdown():
