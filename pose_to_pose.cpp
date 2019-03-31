@@ -33,8 +33,12 @@ void poseUpdate(const turtlesim::Pose::ConstPtr& pose)
 {
     x = pose->x, y = pose->y, th = pose->theta,
     v = pose->linear_velocity, vth = pose->angular_velocity;
+    
+    //adjust angular state of turtle in range [-PI, PI]
     if(th > PI) th -= 2 * PI;
     if(th < -PI) th += 2 * PI;
+    
+    //Output turtle's state on screen
     cout << x << " " << y << " " << th << endl;
 }
 
@@ -50,11 +54,14 @@ int main(int argc, char **argv)
     ros::Rate rate(100);
     while(node.ok())
     {
+        //Check linear_velocity and angular_velocity. If they are 0.0, set new goal.
         if(linearVel() == 0 && angularVel() == 0)
         {
             cout << "Input goal x: "; cin >> goal_x;
             cout << "Input goal y: "; cin >> goal_y;
         }
+        
+        //Set linear_velocity and angular_velocity
         vel_msg.linear.x = linearVel();
         vel_msg.linear.y = 0.0;
         vel_msg.linear.z = 0.0;
@@ -64,8 +71,6 @@ int main(int argc, char **argv)
         vel_msg.angular.z = angularVel();
 
         pub.publish(vel_msg);
-            
-        if(linearVel() == 0 && angular_z == 0) break;
 
         rate.sleep();
         ros::spinOnce();
