@@ -15,15 +15,15 @@ double linear_x, angular_z;
 //Set linear velocity for turtle
 double linearVel()
 {
-    linear_x = 0.5 * sqrt(pow(goal_x - x, 2) + pow(goal_y - y, 2));
+    linear_x = sqrt(pow(goal_x - x, 2) + pow(goal_y - y, 2));
     if(linear_x < 0.001) linear_x = 0.0;
-    return linear_x;
+    return 0.5 * linear_x;
 }
 
 //Set angular velocity for turtle
 double angularVel()
 {
-    angular_z = 2.0 * (atan2(goal_y - y, goal_x - x) - th);
+    angular_z = 2.0 * asin((cos(th) * (goal_y - y) - sin(th) * (goal_x - x)) / linear_x);
     if(linear_x < 0.001) angular_z = 0.0;
     return angular_z;
 }
