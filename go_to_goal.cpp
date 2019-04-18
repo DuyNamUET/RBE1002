@@ -79,3 +79,8 @@ int main(int argc, char **argv)
     }
     return 0;
 }
+
+/*
+Run demo
+$ rosrun [package] go_to_goal 1 2 6 5 0 9
+*/
