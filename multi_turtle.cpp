@@ -17,6 +17,7 @@ using namespace std;
 
 turtlesim::Pose pose1, pose2, pose3;
 
+//Update pose for each turtle
 void updatePose1(const turtlesim::PoseConstPtr &pose)
 {
     pose1 = *pose;
@@ -32,6 +33,7 @@ void updatePose3(const turtlesim::PoseConstPtr &pose)
     pose3 = *pose;
 }
 
+//Set distance form turtle to checkpoint
 double setDistance(turtlesim::Pose pose, double goal_x, double goal_y)
 {
     double dis = sqrt(pow(goal_x - pose.x, 2) + pow(goal_y - pose.y, 2));
@@ -39,6 +41,7 @@ double setDistance(turtlesim::Pose pose, double goal_x, double goal_y)
     return dis;
 }
 
+//Set angurlar form turtle to checkpoint
 double setAngular(turtlesim::Pose pose, double goal_x, double goal_y)
 {
     double ang;
@@ -51,6 +54,7 @@ double setAngular(turtlesim::Pose pose, double goal_x, double goal_y)
     return ang;
 }
 
+//Get velocity
 geometry_msgs::Twist getVelocity(turtlesim::Pose pose, double goal_x, double goal_y)
 {
     geometry_msgs::Twist vel;
@@ -62,10 +66,10 @@ geometry_msgs::Twist getVelocity(turtlesim::Pose pose, double goal_x, double goa
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "hehe");
+    ros::init(argc, argv, "multi_turtle");
     ros::NodeHandle node;
 
-    //Declare pose of multiple turtles
+    //Declare random pose of multiple turtles
     for(int i = 1; i < 3; i++)
     {
         ros::service::waitForService("spawn");
@@ -85,6 +89,7 @@ int main(int argc, char **argv)
     ros::Publisher pub2 = node.advertise<geometry_msgs::Twist>("/turtle2/cmd_vel", 100);
     ros::Publisher pub3 = node.advertise<geometry_msgs::Twist>("/turtle3/cmd_vel", 100);
 
+    //Put pose's turtle to array, each pose is one column 2D
     double arr_goal[3][2];
     arr_goal[0][0] = pose1.x;
     arr_goal[0][1] = pose1.y;
@@ -93,6 +98,7 @@ int main(int argc, char **argv)
     ros::Rate rate(100);
     while(node.ok())
     {
+        //Did each turtle go to checkpoint. If done, go to new checkpoint
         if(setDistance(pose1, arr_goal[0][0], arr_goal[0][1]) == 0.0)
         {
             if(i < argc - 1)
@@ -132,8 +138,3 @@ int main(int argc, char **argv)
     }
     return 0;
 }
-
-/*
-run demo:
-$ rosrun [package] multi_turtle [list_point]
-*/
