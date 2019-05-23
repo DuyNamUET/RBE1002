@@ -1,3 +1,11 @@
+/*********************************************************************
+** run demo: rosrun [package] [type] [list]                         **
+** [list] is array of number (argv(1) to argv(end))                 **
+** argv(1) is number of turtles that we have                        **
+** from argv(2) to argv(2 * argv(1) + 1) is position of each turtle **
+** from argv(2 * (argv(1) + 1)) is position of each checkpoint      **
+*********************************************************************/
+
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <turtlesim/Pose.h>
